@@ -18,7 +18,10 @@ import {
   Operation,
   OperationKind
 } from "./downloadPlanBuilder";
-import { checkIsRangesSupported } from "./multipleRangeDownloader";
+import {
+  checkIsRangesSupported,
+  executeTasksUsingMultipleRangeRequests
+} from "./multipleRangeDownloader";
 
 export interface DifferentialDownloaderOptions {
   readonly oldFile: string;
@@ -203,17 +206,17 @@ export abstract class DifferentialDownloader {
       const firstStream = streams[0];
       // TASK - use useMultipleRangeRequest property from package.json
       let w: any;
-      // if (this.options.isUseMultipleRangeRequest) {
-      //   w = executeTasksUsingMultipleRangeRequests(
-      //     this,
-      //     tasks,
-      //     firstStream,
-      //     oldFileFd,
-      //     reject
-      //   );
-      //   w(0);
-      //   return;
-      // }
+      if (this.options.isUseMultipleRangeRequest) {
+        w = executeTasksUsingMultipleRangeRequests(
+          this,
+          tasks,
+          firstStream,
+          oldFileFd,
+          reject
+        );
+        w(0);
+        return;
+      }
 
       let downloadOperationCount = 0;
       let actualUrl: string | null = null;
