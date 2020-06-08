@@ -1,6 +1,6 @@
 # electron-differential-updater
 
-This module allows you to do differential update for mac in addition to existing electron updater functionalities.
+This module allows you to do differential update for mac + progress bar events(for differential update) in addition to existing electron updater functionalities.
 
 # mac-diiferential-updater
 
