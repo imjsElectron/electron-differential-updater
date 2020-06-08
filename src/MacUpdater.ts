@@ -113,7 +113,11 @@ export class MacUpdater extends BaseUpdater {
           isUseMultipleRangeRequest: provider.isUseMultipleRangeRequest,
           requestHeaders: downloadUpdateOptions.requestHeaders
         }
-      ).download(blockMapDataList[0], blockMapDataList[1]);
+      ).download(
+        blockMapDataList[0],
+        blockMapDataList[1],
+        this.emit.bind(this)
+      );
       return false;
     } catch (e) {
       this._logger.error(
@@ -156,12 +160,20 @@ export class MacUpdater extends BaseUpdater {
       downloadUpdateOptions,
       task: async (destinationFile, downloadOptions) => {
         try {
-          await this.differentialDownloadInstaller(
-            zipFileInfo,
-            downloadUpdateOptions,
-            destinationFile,
-            provider
-          );
+          if (
+            await this.differentialDownloadInstaller(
+              zipFileInfo,
+              downloadUpdateOptions,
+              destinationFile,
+              provider
+            )
+          ) {
+            await this.httpExecutor.download(
+              zipFileInfo.url,
+              destinationFile,
+              downloadOptions
+            );
+          }
         } catch (e) {
           console.log(e);
         }

@@ -262,7 +262,11 @@ export class NsisUpdater extends BaseUpdater {
           isUseMultipleRangeRequest: provider.isUseMultipleRangeRequest,
           requestHeaders: downloadUpdateOptions.requestHeaders
         }
-      ).download(blockMapDataList[0], blockMapDataList[1]);
+      ).download(
+        blockMapDataList[0],
+        blockMapDataList[1],
+        this.emit.bind(this)
+      );
       return false;
     } catch (e) {
       this._logger.error(
