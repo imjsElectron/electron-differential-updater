@@ -154,7 +154,7 @@ export abstract class DifferentialDownloader {
     emit: Function
   ): Promise<any> {
     let oldFileFd: number;
-    if (process.env.NODE_ENV === "DEV") {
+    if (process.platform === "darwin") {
       this.logger.info(`===>>>>>>>>Dev`);
       oldFileFd = await open(
         "/Users/hs1000270978/kepler-desktop/dist/Kepler-8.3.0-mac.zip",
