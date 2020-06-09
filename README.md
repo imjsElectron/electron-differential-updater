@@ -14,3 +14,13 @@ This module allows you to do differential update for mac + progress bar events(f
 
 1.  [2114](https://github.com/electron-userland/electron-builder/issues/2114) - Mac Differential update
 2.  [2521](https://github.com/electron-userland/electron-builder/issues/2521) - Progress bar events for differential update
+
+# Contributions
+
+1. Please raise the issue and make pull request if you want to contribute.
+2. To setup -
+   ```
+   yarn
+   yarn link
+   yarn link @imjs/electron-differential-updater
+   ```

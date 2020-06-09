@@ -13,8 +13,7 @@
   "scripts": {
     "compile": "ts-babel \"\"",
     "watch": "watch 'yarn compile' ./src",
-    "//release": "run release script through npm only",
-    "release": "BABEL_ENV=production yarn compile && yarn pack --filename tmp.tgz && npm publish --access public tmp.tgz && rm -rf tmp.tgz && echo Done"
+    "release": "np"
   },
   "dependencies": {
     "@types/node": "^14.0.11",
