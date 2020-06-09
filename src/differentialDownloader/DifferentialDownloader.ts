@@ -10,7 +10,7 @@ import { BlockMap } from "builder-util-runtime/out/blockMapApi";
 import { close, open } from "fs-extra";
 import { createWriteStream } from "fs";
 import { OutgoingHttpHeaders, RequestOptions } from "http";
-import { Logger } from "../main";
+import { Logger, DOWNLOAD_PROGRESS } from "../main";
 import { copyData } from "./DataSplitter";
 import { URL } from "url";
 import {
@@ -18,7 +18,10 @@ import {
   Operation,
   OperationKind
 } from "./downloadPlanBuilder";
-import { checkIsRangesSupported } from "./multipleRangeDownloader";
+import {
+  checkIsRangesSupported,
+  executeTasksUsingMultipleRangeRequests
+} from "./multipleRangeDownloader";
 
 export interface DifferentialDownloaderOptions {
   readonly oldFile: string;
@@ -60,7 +63,8 @@ export abstract class DifferentialDownloader {
 
   protected doDownload(
     oldBlockMap: BlockMap,
-    newBlockMap: BlockMap
+    newBlockMap: BlockMap,
+    emit: Function
   ): Promise<any> {
     // we don't check other metadata like compressionMethod - generic check that it is make sense to differentially update is suitable for it
     if (oldBlockMap.version !== newBlockMap.version) {
@@ -106,10 +110,10 @@ export abstract class DifferentialDownloader {
       )} (${Math.round(downloadSize / (newSize / 100))}%)`
     );
 
-    return this.downloadFile(operations);
+    return this.downloadFile(operations, emit);
   }
 
-  private downloadFile(tasks: Array<Operation>): Promise<any> {
+  private downloadFile(tasks: Array<Operation>, emit: Function): Promise<any> {
     const fdList: Array<OpenedFile> = [];
     const closeFiles = (): Promise<Array<void>> => {
       return Promise.all(
@@ -120,7 +124,7 @@ export abstract class DifferentialDownloader {
         })
       );
     };
-    return this.doDownloadFile(tasks, fdList)
+    return this.doDownloadFile(tasks, fdList, emit)
       .then(closeFiles)
       .catch(e => {
         // then must be after catch here (since then always throws error)
@@ -146,10 +150,11 @@ export abstract class DifferentialDownloader {
 
   private async doDownloadFile(
     tasks: Array<Operation>,
-    fdList: Array<OpenedFile>
+    fdList: Array<OpenedFile>,
+    emit: Function
   ): Promise<any> {
     let oldFileFd: number;
-    if (process.env.NODE_ENV === "DEV") {
+    if (process.platform === "darwin") {
       this.logger.info(`===>>>>>>>>Dev`);
       // oldFileFd = await open(
       //   "/Users/as1000268045/workspace/kepler-desktop/dist/Kepler-8.3.0-mac.zip",
@@ -162,7 +167,9 @@ export abstract class DifferentialDownloader {
     fdList.push({ descriptor: oldFileFd, path: this.options.oldFile });
     const newFileFd = await open(this.options.newFile, "w");
     fdList.push({ descriptor: newFileFd, path: this.options.newFile });
-    const fileOut = createWriteStream(this.options.newFile, { fd: newFileFd });
+    const fileOut = createWriteStream(this.options.newFile, {
+      fd: newFileFd
+    });
     await new Promise((resolve, reject) => {
       const streams: Array<any> = [];
       const digestTransform = new DigestTransform(
@@ -203,17 +210,17 @@ export abstract class DifferentialDownloader {
       const firstStream = streams[0];
       // TASK - use useMultipleRangeRequest property from package.json
       let w: any;
-      // if (this.options.isUseMultipleRangeRequest) {
-      //   w = executeTasksUsingMultipleRangeRequests(
-      //     this,
-      //     tasks,
-      //     firstStream,
-      //     oldFileFd,
-      //     reject
-      //   );
-      //   w(0);
-      //   return;
-      // }
+      if (this.options.isUseMultipleRangeRequest) {
+        w = executeTasksUsingMultipleRangeRequests(
+          this,
+          tasks,
+          firstStream,
+          oldFileFd,
+          reject
+        );
+        w(0);
+        return;
+      }
 
       let downloadOperationCount = 0;
       let actualUrl: string | null = null;
@@ -243,6 +250,15 @@ export abstract class DifferentialDownloader {
         const debug = this.logger.debug;
         if (debug != null) {
           debug(`download range: ${range}`);
+          try {
+            emit(DOWNLOAD_PROGRESS, {
+              transferred: index,
+              total: tasks.length,
+              percent: (index / tasks.length) * 100
+            });
+          } catch (e) {
+            console.log(e);
+          }
         }
 
         const request = this.httpExecutor.createRequest(
