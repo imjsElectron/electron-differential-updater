@@ -154,16 +154,7 @@ export abstract class DifferentialDownloader {
     emit: Function
   ): Promise<any> {
     let oldFileFd: number;
-    if (process.platform === "darwin") {
-      this.logger.info(`===>>>>>>>>Dev`);
-      // oldFileFd = await open(
-      //   "/Users/as1000268045/workspace/kepler-desktop/dist/Kepler-8.3.0-mac.zip",
-      //   "r"
-      // );
-      oldFileFd = await open(this.options.oldFile, "r");
-    } else {
-      oldFileFd = await open(this.options.oldFile, "r");
-    }
+    oldFileFd = await open(this.options.oldFile, "r");
     fdList.push({ descriptor: oldFileFd, path: this.options.oldFile });
     const newFileFd = await open(this.options.newFile, "w");
     fdList.push({ descriptor: newFileFd, path: this.options.newFile });

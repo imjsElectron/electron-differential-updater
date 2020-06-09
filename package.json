@@ -1,10 +1,10 @@
 {
   "name": "@imjs/electron-differential-updater",
-  "version": "4.3.3",
+  "version": "4.3.6",
   "description": "Cross platform differential updater for electron applications",
   "main": "out/main.js",
   "license": "MIT",
-  "repository": "electron-userland/electron-builder",
+  "repository": "https://github.com/imjsElectron/electron-differential-updater",
   "bugs": "https://github.com/imjsElectron/electron-differential-updater/issues",
   "homepage": "https://github.com/imjsElectron/electron-differential-updater",
   "files": [
