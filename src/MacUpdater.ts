@@ -106,7 +106,9 @@ export class MacUpdater extends BaseUpdater {
           newUrl: fileInfo.url,
           oldFile: path.join(
             this.downloadedUpdateHelper!!.cacheDir,
-            CURRENT_APP_INSTALLER_FILE_NAME
+            process.platform === "darwin"
+              ? `${this.app.name}-${this.app.version}-mac.zip`
+              : CURRENT_APP_INSTALLER_FILE_NAME
           ),
           logger: this._logger,
           newFile: installerPath,
