@@ -50,6 +50,22 @@ This module has been built on top of [electron-updater](https://github.com/elect
    yarn link @imjs/electron-differential-updater
    ```
 
-# Credits
+# Special Thanks
 
 To [Devlar](https://github.com/develar) and [electron-builder](https://github.com/electron-userland/electron-builder) community.
+
+# License
+MIT
+
+# Maintainers 🚀
+People maintaining this project.
+
+<!-- prettier-ignore -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/akshay-shrivastava"><img src="https://avatars0.githubusercontent.com/u/26062438?s=460&v=4" width="100px;" alt="Akshay Shrivastava"/><br /><sub><b>Akshay Shrivastava</b></sub></a></td>
+     <td align="center"><a href="https://github.com/harshitsilly"><img src="https://avatars1.githubusercontent.com/u/9112946?s=460&v=4" width="100px;" alt="Harshit Sinha"/><br /><sub><b>harshitsilly</b></sub></a></td>
+  </tr>
+</table>
+
+
