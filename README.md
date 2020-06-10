@@ -1,11 +1,11 @@
 <h1 align="center">Electron-Differential_updater</h1>
 
 <p align="center">
-<a href="https://npmjs.org/package/enquirer">
+<a href="https://npmjs.org/package/@imjs/electron-differential-updater">
 <img src="https://img.shields.io/npm/v/@imjs/electron-differential-updater.svg" alt="version">
 </a>
 
-<a href="https://npmjs.org/package/enquirer">
+<a href="https://npmjs.org/package/@imjs/electron-differential-updater">
 <img src="https://img.shields.io/npm/dm/@imjs/electron-differential-updater.svg" alt="downloads">
 </a>
 </p>
