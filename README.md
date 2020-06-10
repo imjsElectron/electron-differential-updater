@@ -1,4 +1,17 @@
-# electron-differential-updater
+<h1 align="center">Electron-Differential_updater</h1>
+
+<p align="center">
+<a href="https://npmjs.org/package/enquirer">
+<img src="https://img.shields.io/npm/v/@imjs/electron-differential-updater.svg" alt="version">
+</a>
+
+<a href="https://npmjs.org/package/enquirer">
+<img src="https://img.shields.io/npm/dm/@imjs/electron-differential-updater.svg" alt="downloads">
+</a>
+</p>
+
+<br>
+<br>
 
 This module allows you to do differential update for mac + progress bar events(for differential update) in addition to existing electron updater functionalities.
 
