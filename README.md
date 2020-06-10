@@ -36,15 +36,16 @@ This module has been built on top of [electron-updater](https://github.com/elect
 # Contributions
 
 1. Please raise the issue and make pull request if you want to contribute.
-2. To setup -
+2. Local setup -
 
    ```
+   #Install Deps
    yarn
 
-   `Compile`
+   ##Compile
    yarn:win or yarn:mac
 
-   Link locally
+   ##Link locally
    yarn link
    yarn link @imjs/electron-differential-updater
    ```
