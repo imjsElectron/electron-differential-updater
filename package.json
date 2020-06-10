@@ -12,7 +12,8 @@
   ],
   "scripts": {
     "compile": "ts-babel \"\"",
-    "watch": "watch 'yarn compile' ./src",
+    "watch:win": "watch \"yarn compile\" ./src",
+    "watch:mac": "watch 'yarn compile' ./src",
     "release": "np"
   },
   "dependencies": {
