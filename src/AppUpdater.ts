@@ -643,8 +643,11 @@ export abstract class AppUpdater extends EventEmitter {
    */
   _testOnlyOptions: TestOnlyUpdaterOptions | null = null;
 
-  private async getOrCreateDownloadHelper(): Promise<DownloadedUpdateHelper> {
+  private async getOrCreateDownloadHelper(
+    useAppSupportCache: any
+  ): Promise<DownloadedUpdateHelper> {
     let result = this.downloadedUpdateHelper;
+
     if (result == null) {
       const dirName = (await this.configOnDisk.value).updaterCacheDirName;
       const logger = this._logger;
@@ -653,10 +656,12 @@ export abstract class AppUpdater extends EventEmitter {
           "updaterCacheDirName is not specified in app-update.yml Was app build using at least electron-builder 20.34.0?"
         );
       }
-      const cacheDir = path.join(
-        this.app.baseCachePath,
-        dirName || this.app.name
-      );
+      if (useAppSupportCache) {
+        this.setAppSupportCacheDir();
+      }
+
+      const cacheDir = this.app.baseCachePath;
+
       if (logger.debug != null) {
         logger.debug(`updater cache dir: ${cacheDir}`);
       }
@@ -666,7 +671,19 @@ export abstract class AppUpdater extends EventEmitter {
     }
     return result;
   }
-
+  private setAppSupportCacheDir() {
+    let result: string;
+    const appSupportPath = this.app.userDataPath;
+    if (process.platform === "win32") {
+      result = process.env.LOCALAPPDATA || path.join(appSupportPath, "Local");
+    } else if (process.platform === "darwin") {
+      result = path.join(appSupportPath, "Caches");
+    } else {
+      result =
+        process.env.XDG_CACHE_HOME || path.join(appSupportPath, ".cache");
+    }
+    this.app.baseCachePath = result;
+  }
   protected async executeDownload(
     taskOptions: DownloadExecutorTask
   ): Promise<Array<string>> {
@@ -686,7 +703,9 @@ export abstract class AppUpdater extends EventEmitter {
       taskOptions.downloadUpdateOptions.updateInfoAndProvider.info;
     const version = updateInfo.version;
     const packageInfo = fileInfo.packageInfo;
-
+    const {
+      configuration
+    } = taskOptions.downloadUpdateOptions.updateInfoAndProvider.provider;
     function getCacheUpdateFileName(): string {
       // NodeJS URL doesn't decode automatically
       const urlPath = decodeURIComponent(taskOptions.fileInfo.url.pathname);
@@ -698,7 +717,9 @@ export abstract class AppUpdater extends EventEmitter {
       }
     }
 
-    const downloadedUpdateHelper = await this.getOrCreateDownloadHelper();
+    const downloadedUpdateHelper = await this.getOrCreateDownloadHelper(
+      configuration.useAppSupportCache
+    );
     const cacheDir = downloadedUpdateHelper.cacheDirForPendingUpdate;
     await ensureDir(cacheDir);
     const updateFileName = getCacheUpdateFileName();
@@ -815,7 +836,7 @@ export class NoOpLogger implements Logger {
 
 export interface UpdateInfoAndProvider {
   info: UpdateInfo;
-  provider: Provider<any>;
+  provider: any;
 }
 
 export interface DownloadExecutorTask {
