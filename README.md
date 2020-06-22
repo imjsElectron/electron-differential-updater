@@ -19,6 +19,7 @@ This module has been built on top of [electron-updater](https://github.com/elect
 
 1. Implemented First cut of Mac differential update on zip. Docs to be released soon for it.
 2. download-progress event will work for differential update for nsis and mac.
+3. "useAppSupportCache" option added to have updater cache location to user app support directory.
 
 ## TODO
 
