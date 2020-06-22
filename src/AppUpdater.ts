@@ -660,7 +660,10 @@ export abstract class AppUpdater extends EventEmitter {
         this.setAppSupportCacheDir();
       }
 
-      const cacheDir = this.app.baseCachePath;
+      const cacheDir = path.join(
+        this.app.baseCachePath,
+        dirName || this.app.name
+      );
 
       if (logger.debug != null) {
         logger.debug(`updater cache dir: ${cacheDir}`);
@@ -675,12 +678,11 @@ export abstract class AppUpdater extends EventEmitter {
     let result: string;
     const appSupportPath = this.app.userDataPath;
     if (process.platform === "win32") {
-      result = process.env.LOCALAPPDATA || path.join(appSupportPath, "Local");
+      result = process.env.LOCALAPPDATA || appSupportPath;
     } else if (process.platform === "darwin") {
-      result = path.join(appSupportPath, "Caches");
+      result = appSupportPath;
     } else {
-      result =
-        process.env.XDG_CACHE_HOME || path.join(appSupportPath, ".cache");
+      result = process.env.XDG_CACHE_HOME || appSupportPath;
     }
     this.app.baseCachePath = result;
   }
