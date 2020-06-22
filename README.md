@@ -32,6 +32,7 @@ This module has been built on top of [electron-updater](https://github.com/elect
 
 1.  [2114](https://github.com/electron-userland/electron-builder/issues/2114) - Mac Differential update
 2.  [2521](https://github.com/electron-userland/electron-builder/issues/2521) - Progress bar events for differential update
+3.  [4769](https://github.com/electron-userland/electron-builder/issues/4769) - Update location can be moved to user App support path 
 
 # Contributions
 
