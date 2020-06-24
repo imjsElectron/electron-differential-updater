@@ -656,12 +656,11 @@ export abstract class AppUpdater extends EventEmitter {
           "updaterCacheDirName is not specified in app-update.yml Was app build using at least electron-builder 20.34.0?"
         );
       }
-      if (useAppSupportCache) {
-        this.setAppSupportCacheDir();
-      }
 
       const cacheDir = path.join(
-        this.app.baseCachePath,
+        useAppSupportCache
+          ? this.getAppSupportCacheDir()
+          : this.app.baseCachePath,
         dirName || this.app.name
       );
 
@@ -674,7 +673,7 @@ export abstract class AppUpdater extends EventEmitter {
     }
     return result;
   }
-  private setAppSupportCacheDir() {
+  private getAppSupportCacheDir() {
     let result: string;
     const appSupportPath = this.app.userDataPath;
     if (process.platform === "win32") {
@@ -684,7 +683,7 @@ export abstract class AppUpdater extends EventEmitter {
     } else {
       result = process.env.XDG_CACHE_HOME || appSupportPath;
     }
-    this.app.baseCachePath = result;
+    return result;
   }
   protected async executeDownload(
     taskOptions: DownloadExecutorTask
