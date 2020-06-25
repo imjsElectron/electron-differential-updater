@@ -677,7 +677,7 @@ export abstract class AppUpdater extends EventEmitter {
     let result: string;
     const appSupportPath = this.app.userDataPath;
     if (process.platform === "win32") {
-      result = process.env.LOCALAPPDATA || appSupportPath;
+      result = appSupportPath;
     } else if (process.platform === "darwin") {
       result = appSupportPath;
     } else {
