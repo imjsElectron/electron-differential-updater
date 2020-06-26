@@ -3,8 +3,8 @@ import * as path from "path";
 export interface AppAdapter {
   readonly version: string;
   readonly name: string;
-
   readonly isPackaged: boolean;
+  readonly app: any;
 
   /**
    * Path to update metadata file.

@@ -206,19 +206,33 @@ export class NsisUpdater extends BaseUpdater {
       ) {
         return true;
       }
-
-      const newBlockMapUrl = newUrlFromBase(
-        `${fileInfo.url.pathname}.blockmap`,
-        fileInfo.url
-      );
+      const getBlockMapUrl = () => {
+        if (
+          fileInfo.info.url.includes(
+            `${downloadUpdateOptions.updateInfoAndProvider.info.version}`
+          )
+        ) {
+          return `${fileInfo.url.pathname}.blockmap`;
+        } else {
+          const { app } = this.app;
+          return `${fileInfo.url.pathname.replace(
+            new RegExp(fileInfo.info.url, "g"),
+            `${app.productName || app.name} Setup ${
+              downloadUpdateOptions.updateInfoAndProvider.info.version
+            }.exe`
+          )}.blockmap`;
+        }
+      };
+      const blockMapUrl = getBlockMapUrl();
+      const newBlockMapUrl = newUrlFromBase(blockMapUrl, fileInfo.url);
       const oldBlockMapUrl = newUrlFromBase(
-        `${fileInfo.url.pathname.replace(
+        `${blockMapUrl.replace(
           new RegExp(
             downloadUpdateOptions.updateInfoAndProvider.info.version,
             "g"
           ),
           this.app.version
-        )}.blockmap`,
+        )}`,
         fileInfo.url
       );
       this._logger.info(
