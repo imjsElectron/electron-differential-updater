@@ -34,6 +34,9 @@ export class ElectronAppAdapter implements AppAdapter {
     return getAppCacheDir();
   }
 
+  set baseCachePath(path) {
+    this.app.baseCachePath = path;
+  }
   quit(): void {
     this.app.quit();
   }
