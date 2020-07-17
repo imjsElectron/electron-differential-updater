@@ -1,4 +1,4 @@
-<h1 align="center">Electron-Differential_updater</h1>
+<h1 align="center">Electron-Differential-updater</h1>
 
 <p align="center">
 <a href="https://npmjs.org/package/@imjs/electron-differential-updater">
