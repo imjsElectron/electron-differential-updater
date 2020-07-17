@@ -30,7 +30,7 @@ function moveAppZip() {
       }
     }
     let appZipPath = app.isPackaged
-      ? path.join(app.getAppPath(), "dist", "mac", "Kepler.app")
+      ? path.join(app.getAppPath(), "dist", "mac", `${APP_NAME}.app`)
       : APP_PATH;
 
     if (fs.existsSync(cacheCurrentFile)) {
