@@ -5,13 +5,13 @@
 Install electron-differential-updater from npm.
 
 ```
-  npm install electron-differential-updater --save
+  npm i @imjs/electron-differential-updater
 ```
 
 or through yarn
 
 ```
-  yarn  add electron-differential-updater
+  yarn  add @imjs/electron-differential-updater
 ```
 
 ## Configure publish
