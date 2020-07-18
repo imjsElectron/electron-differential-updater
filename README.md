@@ -17,16 +17,16 @@ This module has been built on top of [electron-updater](https://github.com/elect
 
 # Features
 
-1. Implemented First cut of Mac differential update on zip. Docs to be released soon for it.
+1. Implemented First cut of Mac differential update on zip.
 2. download-progress event will work for differential update for nsis and mac.
 3. "useAppSupportCache" option added to have updater cache location to user app support directory.
 4. Supporting differential updater for NSIS even when artifact name is static(ex: "appName-setup.exe")
 
+Docs- https://imjselectron.github.io/electron-differential-updater/#/
 ## TODO
 
-1. Blockmap file for genrated zip to be included as part of utils.(mac)
-2. Logic to move app zip to electron-updater cache location as part of utils.(mac)
-3. Differential update for dmg.(Depending on free time, if you guys want to raise a pr or do fork.. we r happy to merge pull request.)
+1. Logic to move app zip to electron-updater cache location as part of utils.(mac)
+2. Differential update for dmg.(Depending on free time, if you guys want to raise a pr or do fork.. we r happy to merge pull request.)
 
 ## for other updater related info check - [Electron-updater](https://github.com/electron-userland/electron-builder/tree/master/packages/electron-updater)
 
