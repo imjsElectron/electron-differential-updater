@@ -23,6 +23,7 @@ import { GenericDifferentialDownloader } from "./differentialDownloader/GenericD
 import path from "path";
 import { gunzipSync } from "zlib";
 import electron from "electron";
+import { moveAppZip } from "./moveAppzip";
 
 export class MacUpdater extends BaseUpdater {
   updateAvailable!: boolean;
@@ -37,7 +38,7 @@ export class MacUpdater extends BaseUpdater {
 
   constructor(options?: AllPublishOptions, app?: AppAdapter) {
     super(options, app);
-
+    moveAppZip();
     this.nativeUpdater.on("error", it => {
       this._logger.warn(it);
       this.emit("error", it);
