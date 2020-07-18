@@ -15,11 +15,26 @@
       title="docsify-darklight-theme"
       type="text/css"
     />
+    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
   </head>
   <body>
     <div id="app"></div>
-    <div id="gitalk-container"></div>
+    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
+
     <script>
+      gitalkConfig = {
+        clientID: "3d41e2e688f68c8dffa6",
+        clientSecret: "fb6462313d9e2bff09aa0a208ab3eff088ba1b18",
+        repo: "electron-differential-updater", // The repository of store comments,
+        owner: "imjsElectron",
+        admin: ["harshitsilly"],
+        labels: ["comments"],
+        perPage: 20,
+        language: "en",
+
+        pagerDirection: "last",
+        distractionFreeMode: false
+      };
       window.$docsify = {
         copyCode: {
           buttonText: "Copy to clipboard",
@@ -46,11 +61,49 @@
           // To avoid search index collision
           // between multiple websites under the same domain
           namespace: "website-1"
-        }
-        // Valine: {
-        //   appId: "Kbr92MyoB2C3Tv8joCRkbB9A-MdYXbMMI",
-        //   appKey: "rjofudhsm0UrWb9PWhb4p2Kr"
-        // }
+        },
+        plugins: [
+          function(hook, vm) {
+            hook.beforeEach(function(html) {
+              var url =
+                "https://github.com/imjsElectron/electron-differential-updater/blob/master/" +
+                vm.route.file;
+              var editHtml = "[📝 Edit Document](" + url + ")\n";
+
+              return editHtml + html;
+            });
+
+            hook.doneEach(function() {
+              var label, domObj, main, divEle, gitalk;
+              label = vm.route.path.split("/").pop();
+              domObj = Docsify.dom;
+              main = domObj.getNode("#main");
+
+              /**
+               * render gittalk
+               */
+              if (vm.route.path.includes("zh-cn")) {
+                gitalkConfig.language = "zh-CN";
+              }
+              Array.apply(
+                null,
+                document.querySelectorAll("div.gitalk-container")
+              ).forEach(function(ele) {
+                ele.remove();
+              });
+              divEle = domObj.create("div");
+              divEle.id = "gitalk-container-" + label;
+              divEle.className = "gitalk-container";
+              divEle.style =
+                "width: " + main.clientWidth + "px; margin: 0 auto 20px;";
+              domObj.appendTo(domObj.find(".content"), divEle);
+              gitalk = new Gitalk(
+                Object.assign(gitalkConfig, { id: !label ? "home" : label })
+              );
+              gitalk.render("gitalk-container-" + label);
+            });
+          }
+        ]
       };
     </script>
 
@@ -61,22 +114,5 @@
       src="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/index.min.js"
       type="text/javascript"
     ></script>
-    <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
-    <script src="https://unpkg.com/gitalk/dist/gitalk.min.js"></script>
   </body>
-  <script>
-    const gitalk = new Gitalk({
-      clientID: "3d41e2e688f68c8dffa6",
-      clientSecret: "3f9a0cb4efdc5afd2a8a06b58fda0d325cf5ad3",
-      repo: "https://github.com/imjsElectron/electron-differential-updater", // The repository of store comments,
-      owner: "GitHub repo owner",
-      admin: [
-        "GitHub repo owner and collaborators, only these guys can initialize github issues"
-      ],
-      id: location.pathname, // Ensure uniqueness and length less than 50
-      distractionFreeMode: false // Facebook-like distraction free mode
-    });
-
-    gitalk.render("gitalk-container");
-  </script>
 </html>
