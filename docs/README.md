@@ -47,7 +47,7 @@ All the functionalities will be same as of [electron-updater](https://github.com
 2. same download-progress event will work for differential update for win(nsis) and mac(zip).
 3. useAppSupportCache option enable updater cache location to user app support directory.
 
-## Electron-updater Issues/Features implemented in this module
+## Main Issues/Features implemented in this module
 
 1.  [2114](https://github.com/electron-userland/electron-builder/issues/2114) - Mac Differential update
 2.  [2521](https://github.com/electron-userland/electron-builder/issues/2521) - Progress bar events for differential update
