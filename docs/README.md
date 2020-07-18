@@ -71,7 +71,7 @@ This function will do 3 things:- Logic to move app zip to electron-updater cache
 2. generate blockmap for differential update.
 3. update latest-mac.yml sha with newly generated zip sha.
 
-### In Progress - Logic to move app zip to electron-updater cache location as part of utils.(mac) [Issue #4](https://github.com/imjsElectron/electron-differential-updater/issues/4)
+### In Progress - Logic to move app zip to electron-updater cache location for differential update.(mac) [Issue #4](https://github.com/imjsElectron/electron-differential-updater/issues/4)
 
 # Future Roadmap
 
