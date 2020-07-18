@@ -32,7 +32,7 @@ Docs- https://imjselectron.github.io/electron-differential-updater/#/
 
 # Electron-updater Issues/Features implemented in this module
 
-1.  [2114](https://github.com/electron-userland/electron-builder/issues/2114) - Mac Differential update
+1.  [2114](https://github.com/electron-userland/electron-builder/issues/2114)[2995](https://github.com/electron-userland/electron-builder/issues/2995) - Mac Differential update
 2.  [2521](https://github.com/electron-userland/electron-builder/issues/2521) - Progress bar events for differential update
 3.  [4769](https://github.com/electron-userland/electron-builder/issues/4769) - Update location can be moved to user App support path
 
