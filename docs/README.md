@@ -25,7 +25,7 @@ For Example
 "publish": [
 			{
 				"provider": "generic",
-				"url": "https://s3-us-west-2.amazonaws.com/kepler-desktop-ota/dev1",
+				"url": "https://s3-us-west-2.amazonaws.com/test",
 				"channel": "latest",
 				"useMultipleRangeRequest": false,
 				"useAppSupportCache": true
