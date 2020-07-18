@@ -20,6 +20,7 @@
 - Differential Update for mac.
 - Progress for differential update on mac/win.
 - Cache location customization.
+- Many Bug Fixes
 
 [GitHub](https://github.com/imjsElectron/electron-differential-updater)
 [Get Started](#quick-start)
