@@ -12,7 +12,6 @@
     <link
       rel="stylesheet"
       href="//cdn.jsdelivr.net/npm/docsify-darklight-theme@latest/dist/style.min.css"
-      title="docsify-darklight-theme"
       type="text/css"
     />
     <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css" />
@@ -36,14 +35,13 @@
         distractionFreeMode: false
       };
       window.$docsify = {
+        coverpage: true,
         copyCode: {
           buttonText: "Copy to clipboard",
           errorText: "Error",
           successText: "Copied"
         },
         subMaxLevel: 3,
-        name: "Electron-Differential-updater",
-        repo: "https://github.com/imjsElectron/electron-differential-updater",
 
         search: "auto",
         search: {
