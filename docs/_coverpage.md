@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-# Electron Differential Updater <small>4.5.5</small>
+# Electron Differential Updater <small>5.0.0</small>
 
 <p align="center">
 <a href="https://npmjs.org/package/@imjs/electron-differential-updater">
@@ -20,6 +20,7 @@
 - Differential Update for mac.
 - Progress for differential update on mac/win.
 - Cache location customization.
+- Many Bug Fixes
 
 [GitHub](https://github.com/imjsElectron/electron-differential-updater)
 [Get Started](#quick-start)
