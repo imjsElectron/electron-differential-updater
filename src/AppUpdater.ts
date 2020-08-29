@@ -48,6 +48,7 @@ import {
   isUrlProbablySupportMultiRangeRequests
 } from "./providerFactory";
 import { ProviderPlatform } from "./providers/Provider";
+import { isZipAvailabeForDifferentialDownload } from "./prepareAppZip";
 import Session = Electron.Session;
 
 export abstract class AppUpdater extends EventEmitter {
@@ -261,7 +262,15 @@ export abstract class AppUpdater extends EventEmitter {
   /**
    * Asks the server whether there is an update.
    */
-  checkForUpdates(): Promise<UpdateCheckResult> {
+  checkForUpdates(): Promise<UpdateCheckResult | null> {
+    if (!isZipAvailabeForDifferentialDownload()) {
+      this.emit(
+        "error",
+        "Configuring update for differential download",
+        "Cannot check for updates"
+      );
+      return Promise.resolve(null);
+    }
     let checkForUpdatesPromise = this.checkForUpdatesPromise;
     if (checkForUpdatesPromise != null) {
       this._logger.info("Checking for update (already in progress)");
@@ -309,7 +318,7 @@ export abstract class AppUpdater extends EventEmitter {
     }
 
     return this.checkForUpdates().then(it => {
-      const downloadPromise = it.downloadPromise;
+      const downloadPromise = it && it.downloadPromise;
       if (downloadPromise == null) {
         const debug = this._logger.debug;
         if (debug != null) {
@@ -320,7 +329,7 @@ export abstract class AppUpdater extends EventEmitter {
 
       downloadPromise.then(() => {
         const notificationContent = this.formatDownloadNotification(
-          it.updateInfo.version,
+          it ? it.updateInfo.version : "",
           this.app.name,
           downloadNotification
         );
@@ -421,7 +430,7 @@ export abstract class AppUpdater extends EventEmitter {
     return this.allowDowngrade && isLatestVersionOlder;
   }
 
-  protected async getUpdateInfoAndProvider(): Promise<UpdateInfoAndProvider> {
+  public async getUpdateInfoAndProvider(): Promise<UpdateInfoAndProvider> {
     await this.app.whenReady();
 
     if (this.clientPromise == null) {
@@ -673,7 +682,7 @@ export abstract class AppUpdater extends EventEmitter {
     }
     return result;
   }
-  private getAppSupportCacheDir() {
+  public getAppSupportCacheDir() {
     let result: string;
     const appSupportPath = this.app.userDataPath;
     if (process.platform === "win32") {

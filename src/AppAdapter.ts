@@ -11,6 +11,8 @@ export interface AppAdapter {
    */
   readonly appUpdateConfigPath: string;
 
+  readonly appPath: string;
+
   /**
    * Path to user data directory.
    */
