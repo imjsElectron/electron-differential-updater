@@ -37,7 +37,6 @@ export class MacUpdater extends BaseUpdater {
 
   constructor(options?: AllPublishOptions, app?: AppAdapter) {
     super(options, app);
-
     this.nativeUpdater.on("error", it => {
       this._logger.warn(it);
       this.emit("error", it);
