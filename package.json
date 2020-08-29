@@ -14,7 +14,7 @@
     "compile": "ts-babel \"\"",
     "watch:win": "watch \"yarn compile\" ./src",
     "watch:mac": "watch 'yarn compile' ./src",
-    "release": "np"
+    "release": "np --no-tests"
   },
   "dependencies": {
     "@types/node": "^14.0.11",
