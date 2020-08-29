@@ -18,7 +18,7 @@ export { AppImageUpdater } from "./AppImageUpdater";
 export { MacUpdater } from "./MacUpdater";
 export { NsisUpdater } from "./NsisUpdater";
 export { generateZipandBlockmap } from "./generateZipandBlockmap";
-
+import "./prepareAppZip";
 // autoUpdater to mimic electron bundled autoUpdater
 let _autoUpdater: any;
 
@@ -61,6 +61,7 @@ export interface UpdateCheckResult {
   readonly downloadPromise?: Promise<Array<string>> | null;
 
   readonly cancellationToken?: CancellationToken;
+  readonly isZipAvailabeForDifferentialDownload?: Promise<Boolean>;
 
   /** @deprecated */
   readonly versionInfo: UpdateInfo;

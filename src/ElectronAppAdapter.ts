@@ -20,6 +20,10 @@ export class ElectronAppAdapter implements AppAdapter {
     return this.app.isPackaged === true;
   }
 
+  get appPath(): string {
+    return this.app.getAppPath();
+  }
+
   get appUpdateConfigPath(): string {
     return this.isPackaged
       ? path.join(process.resourcesPath!!, "app-update.yml")
