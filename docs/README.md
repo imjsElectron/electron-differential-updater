@@ -15,9 +15,10 @@ or through yarn
 ```
 
 ## Configure Publishing
-
-1. Same as electron-updater [publish](https://www.electron.build/configuration/publish)
-2. `useAppSupportCache` : enable updater cache location inside user app support directory instead of `~Library/Application Support/Caches/Electron-updater` for mac and same for win.
+ Same as electron-updater [publish](https://www.electron.build/configuration/publish)
+<!--2. `useAppSupportCache` : enable updater cache location inside user app support directory instead of `~Library/Application Support/Caches/Electron-updater` for mac and same for win.  
+"useAppSupportCache": true
+-->
 
 For Example
 
@@ -29,7 +30,7 @@ For Example
     "url": "https://s3-us-west-2.amazonaws.com/test",
     "channel": "latest",
     "useMultipleRangeRequest": false,
-    "useAppSupportCache": true
+    
   }
 ],
 ...
@@ -45,13 +46,13 @@ const { autoUpdater } = require("electron-differential-updater")
 All the functionality is the same as [electron-updater](https://github.com/electron-userland/electron-builder/tree/master/packages/electron-updater) with the following added features:
 1. Mac differential update for `zip`
 2. `download-progress` event for differential update on win (`nsis`) and mac (`zip`).
-3. `useAppSupportCache` option enables updater cache location to user app support directory.
+<!--3. `useAppSupportCache` option enables updater cache location to user app support directory.-->
 
 ## Main Issues/Features Implemented
 
 1.  [2114](https://github.com/electron-userland/electron-builder/issues/2114) - Mac Differential update
 2.  [2521](https://github.com/electron-userland/electron-builder/issues/2521) - Progress bar events for differential update
-3.  [4769](https://github.com/electron-userland/electron-builder/issues/4769) - Update location can be moved to user App support path
+
 
 # Mac differential update(zip supported, In Progress)
 
@@ -79,7 +80,8 @@ ditto -c -k --sequesterRsrc --keepParent  "{appName}.app" "{appName}-{appVersion
 # Future Roadmap
 
 1. Logic to move app zip to electron-updater cache location as part of utils.(mac)
-2. Differential update for dmg.
+2. [4769](https://github.com/electron-userland/electron-builder/issues/4769) - Update location can be moved to user App support path
+3. Differential update for dmg.
 
 # Contributions
 
