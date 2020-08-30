@@ -10,7 +10,7 @@ let APP_NAME;
 let APP_VERSION;
 let isZipCreatedForDiffDownload = false;
 
-function prepareAppZip() {
+(() => {
   APP_NAME = app.name;
   APP_VERSION = app.version;
   if (process.platform === "win32") {
@@ -69,8 +69,8 @@ function prepareAppZip() {
     isZipCreatedForDiffDownload = true;
     throw new Error(e);
   }
-}
-prepareAppZip();
+})();
+
 function isZipAvailabeForDifferentialDownload(): boolean {
   return isZipCreatedForDiffDownload;
 }
