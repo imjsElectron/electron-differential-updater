@@ -1,0 +1,50 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Node Program",
+      "program": "${file}"
+    },
+    {
+      "name": "Updater:Main",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "runtimeExecutable": "${workspaceFolder}/example/node_modules/electron/dist/Electron.app/Contents/MacOS/Electron",
+      "windows": {
+        "runtimeExecutable": "${workspaceFolder}/example/node_modules/.bin/electron.cmd"
+      },
+      "program": "./example/main.js"
+    }
+    // // tmp fix of pwa-chrome for new vs code node debugger issue.
+    // {
+    //   "name": "Electron:Renderer",
+    //   "type": "pwa-chrome",
+    //   "request": "attach",
+    //   "port": 9226,
+    //   "smartStep": true,
+    //   "webRoot": "${workspaceFolder}",
+    //   "timeout": 20000,
+    //   "presentation": {
+    //     "hidden": false,
+    //     "group": "electron",
+    //     "order": 2
+    //   }
+    // }
+  ],
+  "compounds": [
+    // {
+    //   "name": "Electron: All",
+    //   "configurations": ["Electron:Main", "Electron:Renderer"],
+    //   "presentation": {
+    //     "hidden": false,
+    //     "group": "electron",
+    //     "order": 0,
+    //     "stopAll": true
+    //   }
+    //   //
+    // }
+  ]
+}

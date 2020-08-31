@@ -18,7 +18,7 @@ export { AppImageUpdater } from "./AppImageUpdater";
 export { MacUpdater } from "./MacUpdater";
 export { NsisUpdater } from "./NsisUpdater";
 export { generateZipandBlockmap } from "./generateZipandBlockmap";
-import "./prepareAppZip";
+
 // autoUpdater to mimic electron bundled autoUpdater
 let _autoUpdater: any;
 
@@ -28,11 +28,11 @@ export declare const autoUpdater: AppUpdater;
 function doLoadAutoUpdater(): AppUpdater {
   // tslint:disable:prefer-conditional-expression
   if (process.platform === "win32") {
-    _autoUpdater = new (require("./NsisUpdater").NsisUpdater)();
+    _autoUpdater = new (require("./NsisUpdater")).NsisUpdater();
   } else if (process.platform === "darwin") {
-    _autoUpdater = new (require("./MacUpdater").MacUpdater)();
+    _autoUpdater = new (require("./MacUpdater")).MacUpdater();
   } else {
-    _autoUpdater = new (require("./AppImageUpdater").AppImageUpdater)();
+    _autoUpdater = new (require("./AppImageUpdater")).AppImageUpdater();
   }
   return _autoUpdater;
 }

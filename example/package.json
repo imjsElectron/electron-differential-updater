@@ -1,0 +1,70 @@
+{
+  "name": "edu",
+  "version": "1.0.3",
+  "description": "Differential Updater",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "npx electron-builder"
+  },
+  "keywords": [
+    "Electron",
+    "Different",
+    "Updater",
+    "demo"
+  ],
+  "author": "GitHub",
+  "license": "CC0-1.0",
+  "build": {
+    "appId": "com.electron.edu",
+    "productName": "EDU",
+    "copyright": "Copyright © 2020 EDU",
+    "asar": false,
+    "afterAllArtifactBuild": "scripts/index.js",
+    "files": [
+      "**/*"
+    ],
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://127.0.0.1:5500/example/dist",
+        "channel": "latest",
+        "useMultipleRangeRequest": false,
+        "useAppSupportCache": false
+      }
+    ],
+    "mac": {
+      "target": [
+        "zip"
+      ],
+      "asar": false
+    },
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "artifactName": "${productName}-Setup-${version}.${ext}",
+      "oneClick": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": true
+    }
+  },
+  "devDependencies": {
+    "electron": "^10.1.0",
+    "electron-builder": "^22.8.0"
+  },
+  "dependencies": {
+    "@imjs/electron-differential-updater": "^5.0.2-0",
+    "electron-log": "^4.2.4"
+  }
+}
