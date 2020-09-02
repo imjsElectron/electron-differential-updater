@@ -66,11 +66,18 @@ class AutoUpdater {
     this.sendToUpdateWindow("action:download-progress", progress);
   }
 
+  ensureSafeQuitAndInstall() {
+    app.removeAllListeners("window-all-closed");
+    let browserWindows = BrowserWindow.getAllWindows();
+    browserWindows.forEach(function(browserWindow) {
+      browserWindow.removeAllListeners("close");
+    });
+  }
   onUpdateDownloaded() {
     log.info("onUpdateDownloaded");
-
+    this.ensureSafeQuitAndInstall();
     this.sendToUpdateWindow("updateDownloaded", info);
-    autoUpdater.quitAndInstall();
+    autoUpdater.quitAndInstall(false, true);
   }
 
   async checkForUpdates() {

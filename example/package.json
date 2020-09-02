@@ -1,29 +1,20 @@
 {
-  "name": "edu",
-  "version": "1.0.3",
-  "description": "Differential Updater",
+  "name": "EDU",
+  "version": "1.0.0",
+  "description": "",
   "main": "main.js",
+  "env": "dev1",
+  "copyright": "opyright © 2020 EDU",
   "scripts": {
     "start": "electron .",
     "dist": "npx electron-builder"
   },
-  "keywords": [
-    "Electron",
-    "Different",
-    "Updater",
-    "demo"
-  ],
-  "author": "GitHub",
-  "license": "CC0-1.0",
   "build": {
-    "appId": "com.electron.edu",
+    "appId": "EDU",
+    "compression": "store",
     "productName": "EDU",
     "copyright": "Copyright © 2020 EDU",
-    "asar": false,
     "afterAllArtifactBuild": "scripts/index.js",
-    "files": [
-      "**/*"
-    ],
     "publish": [
       {
         "provider": "generic",
@@ -37,34 +28,34 @@
       "target": [
         "zip"
       ],
-      "asar": false
+      "asar": false,
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
+      "entitlements": "entitlements.mac.plist",
+      "entitlementsInherit": "entitlements.mac.plist"
     },
     "win": {
-      "target": [
-        {
-          "target": "nsis",
-          "arch": [
-            "x64",
-            "ia32"
-          ]
-        }
-      ]
+      "target": "NSIS",
+      "asar": false
     },
     "nsis": {
-      "artifactName": "${productName}-Setup-${version}.${ext}",
-      "oneClick": true,
-      "perMachine": false,
-      "allowToChangeInstallationDirectory": false,
-      "runAfterFinish": true,
-      "deleteAppDataOnUninstall": true
-    }
+      "oneClick": false,
+      "perMachine": true,
+      "deleteAppDataOnUninstall": true,
+      "include": "build/scripts/uninstaller.nsh",
+      "license": "EULA.txt",
+      "warningsAsErrors": false
+    },
+    "files": [
+      "**/*"
+    ]
   },
   "devDependencies": {
     "electron": "^10.1.0",
     "electron-builder": "^22.8.0"
   },
   "dependencies": {
-    "@imjs/electron-differential-updater": "^5.0.2-0",
+    "@imjs/electron-differential-updater": "5.0.2-1",
     "electron-log": "^4.2.4"
   }
 }

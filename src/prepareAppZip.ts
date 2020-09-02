@@ -56,6 +56,7 @@ let isZipCreatedForDiffDownload = false;
           "Error while creating zip for differential download",
           code
         );
+        isZipCreatedForDiffDownload = true;
         throw new Error("Error while creating zip for differential download");
       } else {
         isZipCreatedForDiffDownload = true;
