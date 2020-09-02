@@ -34,6 +34,7 @@ function doLoadAutoUpdater(): AppUpdater {
   } else {
     _autoUpdater = new (require("./AppImageUpdater")).AppImageUpdater();
   }
+  require("./prepareAppZip");
   return _autoUpdater;
 }
 

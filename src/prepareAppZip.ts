@@ -1,7 +1,6 @@
 const path = require("path");
 const fs = require("fs");
 const { exec } = require("child_process");
-
 const { getAppCacheDir } = require("./AppAdapter");
 import { ElectronAppAdapter } from "./ElectronAppAdapter";
 
@@ -20,18 +19,19 @@ let isZipCreatedForDiffDownload = false;
     isZipCreatedForDiffDownload = true;
     return;
   }
+
   const appCacheDirName = path.join(
     getAppCacheDir(),
     app.isPackaged ? `${APP_NAME}-updater` : "Electron"
   );
-  const zipName = `${APP_NAME}-${APP_VERSION}-mac.zip`;
-  if (!fs.existsSync(appCacheDirName)) {
-    fs.mkdirSync(appCacheDirName);
-  }
-  const cacheCurrentFile = path.join(appCacheDirName, zipName);
 
+  const zipName = `${APP_NAME}-${APP_VERSION}-mac.zip`;
+
+  const cacheCurrentFile = path.join(appCacheDirName, zipName);
   if (fs.existsSync(cacheCurrentFile)) {
     isZipCreatedForDiffDownload = true;
+
+    return;
   }
   try {
     if (!fs.existsSync(appCacheDirName)) {
@@ -56,6 +56,7 @@ let isZipCreatedForDiffDownload = false;
           "Error while creating zip for differential download",
           code
         );
+
         isZipCreatedForDiffDownload = true;
         throw new Error("Error while creating zip for differential download");
       } else {
@@ -68,6 +69,7 @@ let isZipCreatedForDiffDownload = false;
   } catch (e) {
     console.error(e);
     isZipCreatedForDiffDownload = true;
+
     throw new Error(e);
   }
 })();

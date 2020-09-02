@@ -11,7 +11,23 @@ const log = electronLog.scope("auto-update");
 // const isDev = () => app.isPackaged;
 
 class AutoUpdater {
-  constructor() {}
+  constructor() {
+    autoUpdater.logger = log;
+    autoUpdater.autoDownload = false;
+    autoUpdater.autoInstallOnAppQuit = true;
+    autoUpdater.allowDowngrade = false;
+    autoUpdater.allowPrerelease = true;
+    autoUpdater.on("error", error => this.onUpdateError(error));
+    autoUpdater.on("checking-for-update", () =>
+      this.onCheckingForUpdateStarted()
+    );
+    autoUpdater.on("update-available", info => this.onUpdateAvailable(info));
+    autoUpdater.on("update-not-available", () => this.onUpdateNotAvailable());
+    autoUpdater.on("update-downloaded", info => this.onUpdateDownloaded(info));
+    autoUpdater.on("download-progress", progress =>
+      this.onDownloadProgressChanged(progress)
+    );
+  }
 
   onError(error) {
     log.error(error);
@@ -73,7 +89,7 @@ class AutoUpdater {
       browserWindow.removeAllListeners("close");
     });
   }
-  onUpdateDownloaded() {
+  onUpdateDownloaded(info) {
     log.info("onUpdateDownloaded");
     this.ensureSafeQuitAndInstall();
     this.sendToUpdateWindow("updateDownloaded", info);
@@ -81,21 +97,6 @@ class AutoUpdater {
   }
 
   async checkForUpdates() {
-    autoUpdater.logger = log;
-    autoUpdater.autoDownload = false;
-    autoUpdater.autoInstallOnAppQuit = true;
-    autoUpdater.allowDowngrade = false;
-    autoUpdater.allowPrerelease = true;
-    autoUpdater.on("error", error => this.onUpdateError(error));
-    autoUpdater.on("checking-for-update", () =>
-      this.onCheckingForUpdateStarted()
-    );
-    autoUpdater.on("update-available", info => this.onUpdateAvailable(info));
-    autoUpdater.on("update-not-available", () => this.onUpdateNotAvailable());
-    autoUpdater.on("download-progress", progress =>
-      this.onDownloadProgressChanged(progress)
-    );
-    autoUpdater.on("update-downloaded", info => this.onUpdateDownloaded(info));
     // if (isDev()) {
     //   await Promise.resolve();
     // } else {

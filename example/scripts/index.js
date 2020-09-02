@@ -3,6 +3,4 @@ const {
   generateZipandBlockmap
 } = require("@imjs/electron-differential-updater");
 
-module.exports = () => {
-  generateZipandBlockmap();
-};
+generateZipandBlockmap();

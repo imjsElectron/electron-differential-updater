@@ -50,7 +50,6 @@ import {
 import { ProviderPlatform } from "./providers/Provider";
 import { isZipAvailabeForDifferentialDownload } from "./prepareAppZip";
 import Session = Electron.Session;
-import "./prepareAppZip";
 
 export abstract class AppUpdater extends EventEmitter {
   /**
