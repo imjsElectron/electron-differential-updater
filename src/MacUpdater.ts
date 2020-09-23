@@ -1,27 +1,30 @@
 import {
   AllPublishOptions,
   newError,
-  safeStringifyJson,
-  BlockMap,
-  CURRENT_APP_INSTALLER_FILE_NAME
+  safeStringifyJson
+  // BlockMap,
+  // CURRENT_APP_INSTALLER_FILE_NAME
 } from "builder-util-runtime";
 import { stat } from "fs-extra";
 import { createReadStream } from "fs";
 import { AppAdapter } from "./AppAdapter";
 import { BaseUpdater } from "./BaseUpdater";
 import {
-  UpdateDownloadedEvent,
-  newUrlFromBase,
-  ResolvedUpdateFileInfo
+  UpdateDownloadedEvent
+  // newUrlFromBase,
+  // ResolvedUpdateFileInfo
 } from "./main";
-import { findFile, Provider } from "./providers/Provider";
+import {
+  findFile
+  //  Provider
+} from "./providers/Provider";
 import AutoUpdater = Electron.AutoUpdater;
 import { createServer, IncomingMessage, ServerResponse } from "http";
 import { AddressInfo } from "net";
 import { DownloadUpdateOptions } from "./AppUpdater";
-import { GenericDifferentialDownloader } from "./differentialDownloader/GenericDifferentialDownloader";
-import path from "path";
-import { gunzipSync } from "zlib";
+// import { GenericDifferentialDownloader } from "./differentialDownloader/GenericDifferentialDownloader";
+// import path from "path";
+// import { gunzipSync } from "zlib";
 import electron from "electron";
 
 export class MacUpdater extends BaseUpdater {
@@ -48,100 +51,100 @@ export class MacUpdater extends BaseUpdater {
       this.dispatchUpdateDownloaded(updateInfo!!);
     });
   }
-  private async differentialDownloadInstaller(
-    fileInfo: ResolvedUpdateFileInfo,
-    downloadUpdateOptions: DownloadUpdateOptions,
-    installerPath: string,
-    provider: Provider<any>
-  ): Promise<boolean> {
-    try {
-      if (
-        this._testOnlyOptions != null &&
-        !this._testOnlyOptions.isUseDifferentialDownload
-      ) {
-        return true;
-      }
+  // private async differentialDownloadInstaller(
+  //   fileInfo: ResolvedUpdateFileInfo,
+  //   downloadUpdateOptions: DownloadUpdateOptions,
+  //   installerPath: string,
+  //   provider: Provider<any>
+  // ): Promise<boolean> {
+  //   try {
+  //     if (
+  //       this._testOnlyOptions != null &&
+  //       !this._testOnlyOptions.isUseDifferentialDownload
+  //     ) {
+  //       return true;
+  //     }
 
-      const newBlockMapUrl = newUrlFromBase(
-        `${fileInfo.url.pathname}.blockmap`,
-        fileInfo.url
-      );
-      const oldBlockMapUrl = newUrlFromBase(
-        `${fileInfo.url.pathname.replace(
-          new RegExp(
-            downloadUpdateOptions.updateInfoAndProvider.info.version,
-            "g"
-          ),
-          this.app.version
-        )}.blockmap`,
-        fileInfo.url
-      );
-      this._logger.info(
-        `Download block maps (old: "${oldBlockMapUrl.href}", new: ${newBlockMapUrl.href})`
-      );
+  //     const newBlockMapUrl = newUrlFromBase(
+  //       `${fileInfo.url.pathname}.blockmap`,
+  //       fileInfo.url
+  //     );
+  //     const oldBlockMapUrl = newUrlFromBase(
+  //       `${fileInfo.url.pathname.replace(
+  //         new RegExp(
+  //           downloadUpdateOptions.updateInfoAndProvider.info.version,
+  //           "g"
+  //         ),
+  //         this.app.version
+  //       )}.blockmap`,
+  //       fileInfo.url
+  //     );
+  //     this._logger.info(
+  //       `Download block maps (old: "${oldBlockMapUrl.href}", new: ${newBlockMapUrl.href})`
+  //     );
 
-      const downloadBlockMap = async (url: URL): Promise<BlockMap> => {
-        const data = await this.httpExecutor.downloadToBuffer(url, {
-          headers: downloadUpdateOptions.requestHeaders,
-          cancellationToken: downloadUpdateOptions.cancellationToken
-        });
+  //     const downloadBlockMap = async (url: URL): Promise<BlockMap> => {
+  //       const data = await this.httpExecutor.downloadToBuffer(url, {
+  //         headers: downloadUpdateOptions.requestHeaders,
+  //         cancellationToken: downloadUpdateOptions.cancellationToken
+  //       });
 
-        if (data == null || data.length === 0) {
-          throw new Error(`Blockmap "${url.href}" is empty`);
-        }
+  //       if (data == null || data.length === 0) {
+  //         throw new Error(`Blockmap "${url.href}" is empty`);
+  //       }
 
-        try {
-          return JSON.parse(gunzipSync(data).toString());
-        } catch (e) {
-          throw new Error(
-            `Cannot parse blockmap "${url.href}", error: ${e}, raw data: ${data}`
-          );
-        }
-      };
+  //       try {
+  //         return JSON.parse(gunzipSync(data).toString());
+  //       } catch (e) {
+  //         throw new Error(
+  //           `Cannot parse blockmap "${url.href}", error: ${e}, raw data: ${data}`
+  //         );
+  //       }
+  //     };
 
-      const blockMapDataList = await Promise.all([
-        downloadBlockMap(oldBlockMapUrl),
-        downloadBlockMap(newBlockMapUrl)
-      ]);
-      await new GenericDifferentialDownloader(
-        fileInfo.info,
-        this.httpExecutor,
-        {
-          newUrl: fileInfo.url,
-          oldFile: path.join(
-            this.downloadedUpdateHelper!!.cacheDir,
-            process.platform === "darwin"
-              ? `${this.app.name}-${this.app.version}-mac.zip`
-              : CURRENT_APP_INSTALLER_FILE_NAME
-          ),
-          logger: this._logger,
-          newFile: installerPath,
-          isUseMultipleRangeRequest: provider.isUseMultipleRangeRequest,
-          requestHeaders: downloadUpdateOptions.requestHeaders
-        }
-      ).download(
-        blockMapDataList[0],
-        blockMapDataList[1],
-        this.emit.bind(this)
-      );
-      return false;
-    } catch (e) {
-      this._logger.error(
-        `Cannot download differentially, fallback to full download: ${e.stack ||
-          e}`
-      );
-      if (this._testOnlyOptions != null) {
-        // test mode
-        throw e;
-      }
-      return true;
-    }
-  }
+  //     const blockMapDataList = await Promise.all([
+  //       downloadBlockMap(oldBlockMapUrl),
+  //       downloadBlockMap(newBlockMapUrl)
+  //     ]);
+  //     await new GenericDifferentialDownloader(
+  //       fileInfo.info,
+  //       this.httpExecutor,
+  //       {
+  //         newUrl: fileInfo.url,
+  //         oldFile: path.join(
+  //           this.downloadedUpdateHelper!!.cacheDir,
+  //           process.platform === "darwin"
+  //             ? `${this.app.name}-${this.app.version}-mac.zip`
+  //             : CURRENT_APP_INSTALLER_FILE_NAME
+  //         ),
+  //         logger: this._logger,
+  //         newFile: installerPath,
+  //         isUseMultipleRangeRequest: provider.isUseMultipleRangeRequest,
+  //         requestHeaders: downloadUpdateOptions.requestHeaders
+  //       }
+  //     ).download(
+  //       blockMapDataList[0],
+  //       blockMapDataList[1],
+  //       this.emit.bind(this)
+  //     );
+  //     return false;
+  //   } catch (e) {
+  //     this._logger.error(
+  //       `Cannot download differentially, fallback to full download: ${e.stack ||
+  //         e}`
+  //     );
+  //     if (this._testOnlyOptions != null) {
+  //       // test mode
+  //       throw e;
+  //     }
+  //     return true;
+  //   }
+  // }
   protected doDownloadUpdate(
     downloadUpdateOptions: DownloadUpdateOptions
   ): Promise<Array<string>> {
     this.updateInfoForPendingUpdateDownloadedEvent = null;
-    const provider = downloadUpdateOptions.updateInfoAndProvider.provider;
+    // const provider = downloadUpdateOptions.updateInfoAndProvider.provider;
     const files = downloadUpdateOptions.updateInfoAndProvider.provider.resolveFiles(
       downloadUpdateOptions.updateInfoAndProvider.info
     );
@@ -168,20 +171,20 @@ export class MacUpdater extends BaseUpdater {
       downloadUpdateOptions,
       task: async (destinationFile, downloadOptions) => {
         try {
-          if (
-            await this.differentialDownloadInstaller(
-              zipFileInfo,
-              downloadUpdateOptions,
-              destinationFile,
-              provider
-            )
-          ) {
-            await this.httpExecutor.download(
-              zipFileInfo.url,
-              destinationFile,
-              downloadOptions
-            );
-          }
+          // if (
+          //   await this.differentialDownloadInstaller(
+          //     zipFileInfo,
+          //     downloadUpdateOptions,
+          //     destinationFile,
+          //     provider
+          //   )
+          // ) {
+          await this.httpExecutor.download(
+            zipFileInfo.url,
+            destinationFile,
+            downloadOptions
+          );
+          // }
         } catch (e) {
           console.log(e);
         }
