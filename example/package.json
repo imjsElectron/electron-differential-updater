@@ -10,12 +10,21 @@
     "dist": "npx electron-builder",
     "generateZipBlockMap": "node scripts/index.js"
   },
+  
   "build": {
     "appId": "EDU",
     "compression": "store",
     "productName": "EDU",
     "copyright": "Copyright © 2020 EDU",
-    
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://127.0.0.1:5500/dist",
+        "channel": "latest",
+        "useMultipleRangeRequest": false,
+        "useAppSupportCache": false
+      }
+    ],
     "mac": {
       "target": [
         "zip"
@@ -28,16 +37,7 @@
     },
     "win": {
       "target": "NSIS",
-      "asar": false,
-      "publish": [
-        {
-          "provider": "generic",
-          "url": "http://127.0.0.1:5500/dist",
-          "channel": "latest",
-          "useMultipleRangeRequest": false,
-          "useAppSupportCache": false
-        }
-      ]
+      "asar": false
     },
     "nsis": {
       "oneClick": false,
