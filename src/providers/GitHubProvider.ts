@@ -1,3 +1,4 @@
+
 import { CancellationToken, GithubOptions, githubUrl, HttpError, newError, parseXml, ReleaseNoteInfo, UpdateInfo, XElement } from "builder-util-runtime"
 import * as semver from "semver"
 import { URL } from "url"
@@ -6,13 +7,21 @@ import { getChannelFilename, newBaseUrl, newUrlFromBase, Provider, ResolvedUpdat
 import { parseUpdateInfo, ProviderRuntimeOptions, resolveFiles } from "./Provider"
 
 const hrefRegExp = /\/tag\/v?([^/]+)$/
+export interface customGithubOptions extends GithubOptions {
+ /**
+     * The update channel.
+     *  @default false
+     */
+ 
+    useAppSupportCache? : boolean
 
+}
 export abstract class BaseGitHubProvider<T extends UpdateInfo> extends Provider<T> {
   // so, we don't need to parse port (because node http doesn't support host as url does)
   protected readonly baseUrl: URL
   protected readonly baseApiUrl: URL
 
-  protected constructor(protected readonly options: GithubOptions, defaultHost: string, runtimeOptions: ProviderRuntimeOptions) {
+  protected constructor(protected readonly options: customGithubOptions, defaultHost: string, runtimeOptions: ProviderRuntimeOptions) {
     super({
       ...runtimeOptions,
       /* because GitHib uses S3 */
@@ -32,7 +41,7 @@ export abstract class BaseGitHubProvider<T extends UpdateInfo> extends Provider<
 }
 
 export class GitHubProvider extends BaseGitHubProvider<UpdateInfo> {
-  constructor(protected readonly options: GithubOptions, private readonly updater: AppUpdater, runtimeOptions: ProviderRuntimeOptions) {
+  constructor(protected readonly options: customGithubOptions, private readonly updater: AppUpdater, runtimeOptions: ProviderRuntimeOptions) {
     super(options, "github.com", runtimeOptions)
   }
 

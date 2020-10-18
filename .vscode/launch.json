@@ -16,7 +16,7 @@
       "windows": {
         "runtimeExecutable": "${workspaceFolder}/example/node_modules/.bin/electron.cmd"
       },
-      "program": "./example/main.js"
+      "program": "${workspaceFolder}/example/main.js"
     }
     // // tmp fix of pwa-chrome for new vs code node debugger issue.
     // {

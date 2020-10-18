@@ -15,15 +15,7 @@
     "compression": "store",
     "productName": "EDU",
     "copyright": "Copyright © 2020 EDU",
-    "publish": [
-      {
-        "provider": "generic",
-        "url": "http://127.0.0.1:5500/dist",
-        "channel": "latest",
-        "useMultipleRangeRequest": false,
-        "useAppSupportCache": false
-      }
-    ],
+    
     "mac": {
       "target": [
         "zip"
@@ -36,14 +28,21 @@
     },
     "win": {
       "target": "NSIS",
-      "asar": false
+      "asar": false,
+      "publish": [
+        {
+          "provider": "generic",
+          "url": "http://127.0.0.1:5500/dist",
+          "channel": "latest",
+          "useMultipleRangeRequest": false,
+          "useAppSupportCache": false
+        }
+      ]
     },
     "nsis": {
       "oneClick": false,
       "perMachine": true,
       "deleteAppDataOnUninstall": true,
-      "include": "build/scripts/uninstaller.nsh",
-      "license": "EULA.txt",
       "warningsAsErrors": false
     },
     "files": [
