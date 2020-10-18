@@ -1,8 +1,8 @@
-import { AllPublishOptions, BaseS3Options, BintrayOptions, GenericServerOptions, getS3LikeProviderBaseUrl, GithubOptions, newError, PublishConfiguration } from "builder-util-runtime"
+import { BaseS3Options, BintrayOptions, GenericServerOptions, getS3LikeProviderBaseUrl, newError, PublishConfiguration } from "builder-util-runtime"
 import { AppUpdater } from "./AppUpdater"
 import { BintrayProvider } from "./providers/BintrayProvider"
 import { GenericProvider } from "./providers/GenericProvider"
-import { GitHubProvider } from "./providers/GitHubProvider"
+import { GitHubProvider, customGithubOptions } from "./providers/GitHubProvider"
 import { PrivateGitHubProvider } from "./providers/PrivateGitHubProvider"
 import { Provider, ProviderRuntimeOptions } from "./providers/Provider"
 
@@ -10,7 +10,8 @@ export function isUrlProbablySupportMultiRangeRequests(url: string): boolean {
   return !url.includes("s3.amazonaws.com")
 }
 
-export function createClient(data: PublishConfiguration | AllPublishOptions, updater: AppUpdater, runtimeOptions: ProviderRuntimeOptions): Provider<any> {
+
+export function createClient(data: PublishConfiguration | any, updater: AppUpdater, runtimeOptions: ProviderRuntimeOptions): Provider<any> {
   // noinspection SuspiciousTypeOfGuard
   if (typeof data === "string") {
     throw newError("Please pass PublishConfiguration object", "ERR_UPDATER_INVALID_PROVIDER_CONFIGURATION")
@@ -19,7 +20,7 @@ export function createClient(data: PublishConfiguration | AllPublishOptions, upd
   const provider = data.provider
   switch (provider) {
     case "github": {
-      const githubOptions = data as GithubOptions
+      const githubOptions = data as customGithubOptions
       const token = (githubOptions.private ? process.env.GH_TOKEN || process.env.GITHUB_TOKEN : null) || githubOptions.token
       if (token == null) {
         return new GitHubProvider(githubOptions, updater, runtimeOptions)
@@ -34,7 +35,8 @@ export function createClient(data: PublishConfiguration | AllPublishOptions, upd
       return new GenericProvider({
         provider: "generic",
         url: getS3LikeProviderBaseUrl(data),
-        channel: (data as BaseS3Options).channel || null
+        channel: (data as BaseS3Options).channel || null,
+        useAppSupportCache: data.useAppSupportCache
       }, updater, {
         ...runtimeOptions,
         // https://github.com/minio/minio/issues/5285#issuecomment-350428955

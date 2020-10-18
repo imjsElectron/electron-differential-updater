@@ -10,6 +10,7 @@
     "dist": "npx electron-builder",
     "generateZipBlockMap": "node scripts/index.js"
   },
+  
   "build": {
     "appId": "EDU",
     "compression": "store",
@@ -42,8 +43,6 @@
       "oneClick": false,
       "perMachine": true,
       "deleteAppDataOnUninstall": true,
-      "include": "build/scripts/uninstaller.nsh",
-      "license": "EULA.txt",
       "warningsAsErrors": false
     },
     "files": [

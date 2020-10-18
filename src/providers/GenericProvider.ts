@@ -3,10 +3,21 @@ import { AppUpdater } from "../AppUpdater"
 import { getChannelFilename, newBaseUrl, newUrlFromBase, Provider, ResolvedUpdateFileInfo } from "../main"
 import { parseUpdateInfo, ProviderRuntimeOptions, resolveFiles } from "./Provider"
 
+
+
+ interface customGenericServerOptions extends GenericServerOptions {
+    /**
+     * The update channel.
+     *  @default false
+     */
+ 
+   useAppSupportCache? : boolean
+
+}
 export class GenericProvider extends Provider<UpdateInfo> {
   private readonly baseUrl = newBaseUrl(this.configuration.url)
 
-  constructor(private readonly configuration: GenericServerOptions, private readonly updater: AppUpdater, runtimeOptions: ProviderRuntimeOptions) {
+  constructor(private readonly configuration: customGenericServerOptions, private readonly updater: AppUpdater, runtimeOptions: ProviderRuntimeOptions) {
     super(runtimeOptions)
   }
 
