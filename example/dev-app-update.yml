@@ -1,5 +1,4 @@
-provider: generic
-url: http://127.0.0.1:5500/dist
-channel: latest
-useMultipleRangeRequest: false
+provider: github
 useAppSupportCache: false
+owner: "imjsElectron"
+repo: "electron-differential-updater"
