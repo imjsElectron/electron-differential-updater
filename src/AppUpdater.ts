@@ -726,9 +726,9 @@ export abstract class AppUpdater extends EventEmitter {
         return `update.${taskOptions.fileExtension}`;
       }
     }
-
+    const useAppSupportCache = configuration ? configuration.useAppSupportCache : false;
     const downloadedUpdateHelper = await this.getOrCreateDownloadHelper(
-      configuration.useAppSupportCache
+      useAppSupportCache
     );
     const cacheDir = downloadedUpdateHelper.cacheDirForPendingUpdate;
     await ensureDir(cacheDir);

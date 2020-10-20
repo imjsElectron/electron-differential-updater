@@ -1,7 +1,7 @@
 const {
   autoUpdater,
   CancellationToken
-} = require("@imjs/electron-differential-updater");
+} = require("../../electron-differential-updater");
 
 const { dialog, ipcMain, app, BrowserWindow } = require("electron");
 const electronLog = require("electron-log");

@@ -1,6 +1,7 @@
 {
-  "name": "EDU",
-  "version": "1.0.0",
+  "name": "electron-differential-updater",
+  "version": "5.4.0",
+  "author": "imjsElectron",
   "description": "",
   "main": "main.js",
   "env": "dev1",
@@ -8,9 +9,9 @@
   "scripts": {
     "start": "electron .",
     "dist": "npx electron-builder",
+    "publish": "build -p always",
     "generateZipBlockMap": "node scripts/index.js"
   },
-  
   "build": {
     "appId": "EDU",
     "compression": "store",
@@ -18,10 +19,9 @@
     "copyright": "Copyright © 2020 EDU",
     "publish": [
       {
-        "provider": "generic",
-        "url": "http://127.0.0.1:5500/dist",
-        "channel": "latest",
-        "useMultipleRangeRequest": false,
+        "provider": "github",
+        "owner": "imjsElectron",
+        "repo": "electron-differential-updater",
         "useAppSupportCache": false
       }
     ],
