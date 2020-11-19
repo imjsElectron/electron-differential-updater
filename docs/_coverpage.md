@@ -1,6 +1,6 @@
 <!-- _coverpage.md -->
 
-# Electron Differential Updater <small>5.0.0</small>
+# Electron Differential Updater
 
 <p align="center">
 <a href="https://npmjs.org/package/@imjs/electron-differential-updater">
