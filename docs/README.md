@@ -82,7 +82,7 @@ ditto -c -k --sequesterRsrc --keepParent  "{appName}.app" "{appName}-{appVersion
 
 # Differential update download time is more than full download
 
-Differential update donwload time is directly propertional to number of blocks change. Hence the same number of connection request will go to the server. So there can be cases where the whole packages(.zip,exe---> one connection request) takes less time than the differential one if the blockmaps changed are large in number.
+Differential update donwload time is directly propertional to number of blocks change. Hence the same number of connection request will go to the server. **'So there can be cases where the whole packages(.zip,exe---> one connection request) takes less time than the differential one if the blockmaps changed are large in number.`**
 
 # Future Roadmap
 
