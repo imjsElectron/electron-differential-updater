@@ -18,59 +18,62 @@ let isZipCreatedForDiffDownload = false;
     );
     isZipCreatedForDiffDownload = true;
     return;
-  }
-
-  const appCacheDirName = path.join(
-    getAppCacheDir(),
-    app.isPackaged ? `${APP_NAME}-updater` : "Electron"
-  );
-
-  const zipName = `${APP_NAME}-${APP_VERSION}-mac.zip`;
-
-  const cacheCurrentFile = path.join(appCacheDirName, zipName);
-  if (fs.existsSync(cacheCurrentFile)) {
-    isZipCreatedForDiffDownload = true;
-
-    return;
-  }
-  try {
-    if (!fs.existsSync(appCacheDirName)) {
-      fs.mkdirSync(appCacheDirName);
-    }
-
-    let files = fs.readdirSync(appCacheDirName);
-    for (const fileName of files) {
-      if (fileName.endsWith(".zip") && fileName !== zipName) {
-        fs.unlinkSync(path.join(appCacheDirName, fileName));
-      }
-    }
-    let appZipPath = path.normalize(app.appPath + "/../../..");
-
-    console.log("App zip file does not exist, Creting zip file in cache");
-    let createZip = exec(
-      `ditto -c -k --sequesterRsrc --keepParent "${appZipPath}" "${cacheCurrentFile}"`
+  } else if (process.platform === "darwin") {
+    const appCacheDirName = path.join(
+      getAppCacheDir(),
+      app.isPackaged ? `${APP_NAME}-updater` : "Electron"
     );
-    createZip.stderr.on("close", (code: any) => {
-      if (code) {
-        console.error(
-          "Error while creating zip for differential download",
-          code
-        );
 
-        isZipCreatedForDiffDownload = true;
-        throw new Error("Error while creating zip for differential download");
-      } else {
-        isZipCreatedForDiffDownload = true;
-        console.log(
-          "Successfully generated zip file for differential download"
-        );
+    const zipName = `${APP_NAME}-${APP_VERSION}-mac.zip`;
+
+    const cacheCurrentFile = path.join(appCacheDirName, zipName);
+    if (fs.existsSync(cacheCurrentFile)) {
+      isZipCreatedForDiffDownload = true;
+
+      return;
+    }
+    try {
+      if (!fs.existsSync(appCacheDirName)) {
+        fs.mkdirSync(appCacheDirName, { recursive: true });
       }
-    });
-  } catch (e) {
-    console.error(e);
-    isZipCreatedForDiffDownload = true;
 
-    throw new Error(e);
+      let files = fs.readdirSync(appCacheDirName);
+      for (const fileName of files) {
+        if (fileName.endsWith(".zip") && fileName !== zipName) {
+          fs.unlinkSync(path.join(appCacheDirName, fileName));
+        }
+      }
+      let appZipPath = path.normalize(app.appPath + "/../../..");
+
+      console.log("App zip file does not exist, Creting zip file in cache");
+      let createZip = exec(
+        `ditto -c -k --sequesterRsrc --keepParent "${appZipPath}" "${cacheCurrentFile}"`
+      );
+      createZip.stderr.on("close", (code: any) => {
+        if (code) {
+          console.error(
+            "Error while creating zip for differential download",
+            code
+          );
+
+          isZipCreatedForDiffDownload = true;
+          throw new Error("Error while creating zip for differential download");
+        } else {
+          isZipCreatedForDiffDownload = true;
+          console.log(
+            "Successfully generated zip file for differential download"
+          );
+        }
+      });
+    } catch (e) {
+      console.error(e);
+      isZipCreatedForDiffDownload = true;
+      throw new Error(e);
+    }
+  } else {
+    console.log("no support for linux for differential update");
+    isZipCreatedForDiffDownload = true;
+    return;
   }
 })();
 
