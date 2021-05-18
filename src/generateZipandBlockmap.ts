@@ -26,7 +26,7 @@ function generateZipandBlockmap() {
 
   try {
     let output = execSync(
-      `${appBuilderPath} blockmap --input=${APP_GENERATED_BINARY_PATH} --output=${APP_DIST_PATH}/${APP_NAME}-${APP_VERSION}-mac.zip.blockmap --compression=gzip`
+      `${appBuilderPath} blockmap --input="${APP_GENERATED_BINARY_PATH}" --output="${APP_DIST_PATH}/${APP_NAME}-${APP_VERSION}-mac.zip.blockmap" --compression=gzip`
     );
     let { sha512, size } = JSON.parse(output);
 
