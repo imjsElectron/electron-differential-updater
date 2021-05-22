@@ -8,6 +8,7 @@ const packageInfo = require(path.join(currentWorkingDirectory, "package.json"));
 
 const APP_NAME = packageInfo.build.productName;
 const APP_VERSION = process.argv[2] ? process.argv[2] : packageInfo.version;
+const CHANNEL = APP_VERSION.indexOf('beta') > -1 ? 'beta' : APP_VERSION.indexOf('alpha') > -1 ? 'alpha': 'latest';
 const APP_DIST_PATH = path.join(currentWorkingDirectory, "dist");
 
 function generateZipandBlockmap() {
@@ -30,7 +31,7 @@ function generateZipandBlockmap() {
     );
     let { sha512, size } = JSON.parse(output);
 
-    const ymlPath = path.join(APP_DIST_PATH, "latest-mac.yml");
+    const ymlPath = path.join(APP_DIST_PATH, `${CHANNEL}-mac.yml`);
     let ymlData = yaml.safeLoad(fs.readFileSync(ymlPath, "utf8"));
     console.log(ymlData);
     ymlData.sha512 = sha512;
