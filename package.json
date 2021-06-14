@@ -1,6 +1,6 @@
 {
   "name": "@imjs/electron-differential-updater",
-  "version": "5.1.5",
+  "version": "5.1.6-beta.1",
   "description": "Cross platform differential updater for electron applications",
   "main": "out/main.js",
   "license": "MIT",
