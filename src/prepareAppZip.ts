@@ -24,7 +24,7 @@ let isZipCreatedForDiffDownload = false;
     const dirName = data?.updaterCacheDirName;
     const appCacheDirName = path.join(
       getAppCacheDir(),
-      app.isPackaged ? `${dirName || APP_NAME}-updater` : "Electron"
+      app.isPackaged ? (dirName || `${APP_NAME}-updater`) : "Electron"
     );
 
     const zipName = `${APP_NAME}-${APP_VERSION}-mac.zip`;
