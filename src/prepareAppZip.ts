@@ -3,6 +3,7 @@ const fs = require("fs");
 const { exec } = require("child_process");
 const { getAppCacheDir } = require("./AppAdapter");
 import { ElectronAppAdapter } from "./ElectronAppAdapter";
+import { safeLoad } from "js-yaml";
 
 const app = new ElectronAppAdapter();
 let APP_NAME;
@@ -19,9 +20,11 @@ let isZipCreatedForDiffDownload = false;
     isZipCreatedForDiffDownload = true;
     return;
   } else if (process.platform === "darwin") {
+    const data =  safeLoad(fs.readFileSync(app.appUpdateConfigPath, "utf-8"));
+    const dirName = data?.updaterCacheDirName;
     const appCacheDirName = path.join(
       getAppCacheDir(),
-      app.isPackaged ? `${APP_NAME}-updater` : "Electron"
+      app.isPackaged ? (dirName || `${APP_NAME}-updater`) : "Electron"
     );
 
     const zipName = `${APP_NAME}-${APP_VERSION}-mac.zip`;
