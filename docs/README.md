@@ -57,7 +57,7 @@ All the functionality is the same as [electron-updater](https://github.com/elect
 
 # Mac differential update(zip supported)
 
-For differential updates to work, the module needs a blockmap. The blocamap can be generated after the successful build of mac (`zip`) through [electron-builder](https://github.com/electron-userland/electron-builder).
+For differential updates to work, the module needs a blockmap. The blockmap can be generated after the successful build of mac (`zip`) through [electron-builder](https://github.com/electron-userland/electron-builder).
 
 The `generateZipandBlockmap` function assumes the app location will be `/dist/mac/*.app` and the app name will be [productName](https://www.electron.build/configuration/configuration) configured inside build object in package.json or other forms of the electron-builder configuration.
 
