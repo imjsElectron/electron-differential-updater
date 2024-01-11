@@ -1,2 +1,0 @@
-yarn dist
-yarn generateZipBlockMap
