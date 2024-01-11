@@ -1,12 +1,12 @@
 {
-  "name": "@imjs/electron-differential-updater",
-  "version": "5.1.7",
+  "name": "@techsmith/electron-differential-updater",
+  "version": "1.0.0",
   "description": "Cross platform differential updater for electron applications",
   "main": "out/main.js",
   "license": "MIT",
-  "repository": "https://github.com/imjsElectron/electron-differential-updater",
-  "bugs": "https://github.com/imjsElectron/electron-differential-updater/issues",
-  "homepage": "https://github.com/imjsElectron/electron-differential-updater",
+  "repository": "https://github.com/techsmith/electron-differential-updater",
+  "bugs": "https://github.com/techsmith/electron-differential-updater/issues",
+  "homepage": "https://github.com/techsmith/electron-differential-updater",
   "files": [
     "out"
   ],
