@@ -1,0 +1,47 @@
+trigger: none
+
+pr: none
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+parameters:
+- name: isProduction
+  displayName: Is this a production release?
+  type: boolean
+  default: false
+
+steps:
+- ${{ if eq(parameters.isProduction, true) }}:
+  - bash: |
+      if [ "$(Build.SourceBranchName)" != "main" ]
+      then
+        echo "Production publish to NPM was run on branch $(Build.SourceBranchName) but should only be run on the main branch!"
+        echo "##vso[task.logissue type=error;]Production publish to NPM should only be run on the main branch!"
+        echo "##vso[task.complete result=Failed;]"
+      fi
+    displayName: 'Ensure running branch is main'
+
+- task: Yarn@2
+  inputs:
+    arguments: 'install --frozen-lockfile'
+  displayName: 'Install JS dependencies'
+
+- ${{ if eq(parameters.isProduction, false) }}:
+  - bash: |
+      v=`node -p "const p = require('./package.json'); p.version + '-$(Build.SourceBranchName).$(Build.BuildID)'"`
+      yarn version --no-git-tag-version --new-version $v
+    displayName: 'Prerelease versioning'
+
+- task: Yarn@2
+  inputs:
+    arguments: 'compile'
+  displayName: 'Build updated distribution files'
+
+- task: Npm@1
+  displayName: 'Publish to NPM'
+  inputs:
+    command: publish
+    verbose: false
+    publishRegistry: useFeed
+    publishFeed: '319cd301-2991-452f-99ac-d08642840a1c'
